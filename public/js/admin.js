@@ -9,6 +9,22 @@
     selectedId: null
   };
 
+  function savePendingToStorage() {
+    try { localStorage.setItem("taiem_admin_pending", JSON.stringify(state.pending)); } catch (e) {}
+  }
+
+  function loadPendingFromStorage() {
+    try {
+      var saved = localStorage.getItem("taiem_admin_pending");
+      if (saved) return JSON.parse(saved);
+    } catch (e) {}
+    return null;
+  }
+
+  function clearPendingStorage() {
+    try { localStorage.removeItem("taiem_admin_pending"); } catch (e) {}
+  }
+
   function showStatus(msg, kind) {
     const el = document.getElementById("statusMsg");
     el.textContent = msg;
@@ -112,6 +128,7 @@
     }
     refreshRow(id);
     updatePendingUI();
+    savePendingToStorage();
   }
 
   function refreshRow(id) {
@@ -150,6 +167,7 @@
         marker.getElement()?.classList.add("is-dirty");
         refreshRow(p.id);
         updatePendingUI();
+        savePendingToStorage();
       });
 
       state.markers[p.id] = marker;
@@ -189,6 +207,7 @@
         state.markers[u.id]?.getElement()?.classList.remove("is-dirty");
       });
       state.pending = {};
+      clearPendingStorage();
       renderSidebar();
       updatePendingUI();
       showStatus(`Đã lưu ${body.changed} vị trí.`, "ok");
@@ -206,7 +225,24 @@
       state.data = await res.json();
       initMap();
       addMarkers();
-      renderSidebar();
+
+      var savedPending = loadPendingFromStorage();
+      if (savedPending && Object.keys(savedPending).length > 0) {
+        Object.entries(savedPending).forEach(([id, coords]) => {
+          const marker = state.markers[id];
+          if (marker) {
+            marker.setLatLng([coords.lat, coords.lng]);
+            marker.getElement()?.classList.add("is-dirty");
+            state.pending[id] = coords;
+          }
+        });
+        renderSidebar();
+        updatePendingUI();
+        showStatus("Đã khôi phục " + Object.keys(savedPending).length + " thay đổi chưa lưu từ phiên trước.", "ok");
+      } else {
+        renderSidebar();
+      }
+
       document.getElementById("saveBtn").addEventListener("click", saveAll);
     } catch (err) {
       showStatus("Không tải được dữ liệu dự án.", "error");

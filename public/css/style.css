@@ -627,6 +627,80 @@ button { font: inherit; }
   border-style: dashed;
 }
 
+/* Project name labels above markers */
+.marker-label {
+  background: rgba(255, 255, 255, 0.92) !important;
+  border: 1px solid var(--glass-border-strong) !important;
+  border-radius: 6px !important;
+  padding: 2px 8px !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  font-family: var(--font-display) !important;
+  color: var(--text-primary) !important;
+  box-shadow: 0 2px 8px rgba(15, 40, 30, 0.12) !important;
+  white-space: nowrap !important;
+}
+.marker-label::before {
+  border-top-color: rgba(255, 255, 255, 0.92) !important;
+}
+
+/* Landmark markers */
+.landmark-marker {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 50%;
+  border: 2px solid rgba(0,0,0,0.1);
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-size: 16px;
+  line-height: 1;
+}
+.landmark-shopping { border-color: #e11d48; }
+.landmark-hospital { border-color: #2563eb; }
+.landmark-market { border-color: #d97706; }
+.landmark-golf { border-color: #16a34a; }
+
+.landmark-label {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border: 1px solid rgba(0,0,0,0.08) !important;
+  border-radius: 4px !important;
+  padding: 1px 6px !important;
+  font-size: 10.5px !important;
+  font-weight: 500 !important;
+  color: var(--text-secondary) !important;
+  box-shadow: none !important;
+  white-space: nowrap !important;
+}
+
+/* Enhanced popup */
+.popup-inner { line-height: 1.5; }
+.popup-name { font-family: var(--font-display); font-size: 15px; display: block; margin-bottom: 4px; }
+.popup-developer { font-size: 12.5px; color: var(--text-tertiary); }
+.popup-price { font-family: var(--font-display); font-size: 14px; color: var(--accent); margin: 6px 0 4px; }
+.popup-address { font-size: 12px; color: var(--text-secondary); }
+.popup-status { font-size: 11px; font-weight: 600; color: var(--accent-strong); margin-top: 4px; }
+.popup-handover { font-size: 11.5px; color: var(--text-secondary); margin-top: 2px; }
+.popup-contact-btn {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 14px;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  color: var(--accent-ink);
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.popup-contact-btn:hover { background: var(--accent-strong); }
+
+/* Handover info on card */
+.card-handover {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: var(--space-2);
+}
+
 /* =========================================================
    Disclaimer / Footer
    ========================================================= */
