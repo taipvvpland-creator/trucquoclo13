@@ -1,39 +1,40 @@
 /* =========================================================
-   TAIEMCHIA SEBDS — QL13 Project Map
-   Design language: dark glass, mint/emerald AI accent,
+   TAIEM — QL13 Project Map
+   Design language: light glass, teal/emerald accent,
    bold geometric display type. Signature element: the
    scroll-synced corridor map itself, not decoration.
    ========================================================= */
 
 :root {
   /* --- Color tokens --- */
-  --bg-base: #070f0c;
-  --bg-elevated: #0d1a15;
-  --bg-elevated-2: #10221b;
-  --glass-bg: rgba(233, 255, 245, 0.045);
-  --glass-bg-strong: rgba(233, 255, 245, 0.075);
-  --glass-border: rgba(167, 243, 208, 0.16);
-  --glass-border-strong: rgba(167, 243, 208, 0.3);
+  --bg-base: #f6faf8;
+  --bg-elevated: #ffffff;
+  --bg-elevated-2: #ffffff;
+  --glass-bg: rgba(15, 40, 30, 0.035);
+  --glass-bg-strong: rgba(15, 40, 30, 0.06);
+  --glass-border: rgba(15, 60, 45, 0.10);
+  --glass-border-strong: rgba(15, 60, 45, 0.18);
 
-  --accent: #5eead4;
-  --accent-strong: #2dd4a7;
-  --accent-glow: rgba(94, 234, 212, 0.35);
+  --accent: #0d9488;
+  --accent-strong: #0f766e;
+  --accent-glow: rgba(13, 148, 136, 0.25);
+  --accent-ink: #ffffff;
 
-  --text-primary: #eef7f3;
-  --text-secondary: #a9c2ba;
-  --text-tertiary: #708a82;
+  --text-primary: #0f2019;
+  --text-secondary: #4b6157;
+  --text-tertiary: #7c9088;
 
-  --status-new-bg: rgba(94, 234, 212, 0.14);
-  --status-new-fg: #6ee7c8;
-  --status-selling-bg: rgba(56, 189, 248, 0.14);
-  --status-selling-fg: #67cbf5;
-  --status-handed-bg: rgba(148, 163, 184, 0.14);
-  --status-handed-fg: #b7c2cf;
-  --status-upcoming-bg: rgba(251, 191, 36, 0.14);
-  --status-upcoming-fg: #f4c766;
+  --status-new-bg: rgba(13, 148, 136, 0.12);
+  --status-new-fg: #0f766e;
+  --status-selling-bg: rgba(2, 132, 199, 0.12);
+  --status-selling-fg: #0369a1;
+  --status-handed-bg: rgba(100, 116, 139, 0.14);
+  --status-handed-fg: #475569;
+  --status-upcoming-bg: rgba(217, 119, 6, 0.14);
+  --status-upcoming-fg: #b45309;
 
-  --confidence-fg: #f4c766;
-  --confidence-bg: rgba(251, 191, 36, 0.12);
+  --confidence-fg: #b45309;
+  --confidence-bg: rgba(217, 119, 6, 0.12);
 
   /* --- Type --- */
   --font-display: "Space Grotesk", "Inter", system-ui, sans-serif;
@@ -55,7 +56,7 @@
   --radius-lg: 24px;
   --radius-pill: 999px;
 
-  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.35);
+  --shadow-glass: 0 8px 32px rgba(15, 40, 30, 0.10);
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -78,8 +79,8 @@ body {
   margin: 0;
   background: var(--bg-base);
   background-image:
-    radial-gradient(ellipse 60% 40% at 15% 0%, rgba(94, 234, 212, 0.10), transparent 60%),
-    radial-gradient(ellipse 50% 35% at 100% 20%, rgba(45, 212, 167, 0.08), transparent 60%);
+    radial-gradient(ellipse 60% 40% at 15% 0%, rgba(13, 148, 136, 0.08), transparent 60%),
+    radial-gradient(ellipse 50% 35% at 100% 20%, rgba(15, 118, 110, 0.06), transparent 60%);
   color: var(--text-primary);
   font-family: var(--font-body);
   font-size: 16px;
@@ -134,7 +135,7 @@ button { font: inherit; }
   align-items: center;
   justify-content: space-between;
   padding: var(--space-4) var(--space-5);
-  background: rgba(7, 15, 12, 0.72);
+  background: rgba(255, 255, 255, 0.75);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--glass-border);
@@ -157,7 +158,7 @@ button { font: inherit; }
   background: linear-gradient(135deg, var(--accent), var(--accent-strong));
   display: grid;
   place-items: center;
-  color: #06231b;
+  color: var(--accent-ink);
   font-weight: 800;
   font-size: 15px;
 }
@@ -171,7 +172,7 @@ button { font: inherit; }
   padding: 10px 18px;
   border-radius: var(--radius-pill);
   background: var(--accent);
-  color: #06231b;
+  color: var(--accent-ink);
   font-weight: 600;
   font-size: 14px;
   min-height: 44px;
@@ -224,7 +225,7 @@ button { font: inherit; }
 
 .hero h1 em {
   font-style: normal;
-  background: linear-gradient(120deg, var(--accent), #a7f3d0 60%);
+  background: linear-gradient(120deg, var(--accent-strong), var(--accent) 60%);
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
@@ -258,7 +259,7 @@ button { font: inherit; }
 
 .btn-primary {
   background: var(--accent);
-  color: #06231b;
+  color: var(--accent-ink);
 }
 .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 12px 28px var(--accent-glow); }
 
@@ -329,7 +330,7 @@ button { font: inherit; }
 .hero-route-pin .pin-label {
   font-size: 11px;
   color: var(--text-secondary);
-  background: rgba(7, 15, 12, 0.8);
+  background: rgba(255, 255, 255, 0.9);
   padding: 2px 8px;
   border-radius: var(--radius-pill);
   white-space: nowrap;
@@ -358,7 +359,7 @@ button { font: inherit; }
   top: 65px;
   z-index: 40;
   padding: var(--space-4) 0;
-  background: rgba(7, 15, 12, 0.85);
+  background: rgba(246, 250, 248, 0.88);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border-bottom: 1px solid var(--glass-border);
@@ -395,7 +396,7 @@ button { font: inherit; }
 .chip[aria-pressed="true"] {
   background: var(--accent);
   border-color: var(--accent);
-  color: #06231b;
+  color: var(--accent-ink);
 }
 
 .filter-count {
@@ -541,7 +542,7 @@ button { font: inherit; }
   min-height: 40px;
   transition: all 160ms var(--ease-out);
 }
-.card-contact:hover { background: var(--accent); border-color: var(--accent); color: #06231b; }
+.card-contact:hover { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
 
 .confidence-note {
   display: inline-flex;
@@ -600,7 +601,7 @@ button { font: inherit; }
 }
 .leaflet-control-zoom a:hover { background: var(--glass-bg-strong) !important; }
 .leaflet-control-attribution {
-  background: rgba(7, 15, 12, 0.7) !important;
+  background: rgba(255, 255, 255, 0.8) !important;
   color: var(--text-tertiary) !important;
 }
 .leaflet-control-attribution a { color: var(--text-secondary) !important; }
@@ -611,13 +612,14 @@ button { font: inherit; }
   border-radius: 50% 50% 50% 0;
   transform: rotate(-45deg);
   background: var(--accent);
-  border: 2px solid #06231b;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.4);
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 14px rgba(15, 40, 30, 0.35);
   cursor: pointer;
   transition: transform 200ms var(--ease-out), background 200ms var(--ease-out);
 }
 .map-marker.is-active {
-  background: #fff;
+  background: var(--accent-strong);
+  box-shadow: 0 4px 14px rgba(15, 40, 30, 0.35), 0 0 0 6px var(--accent-glow);
   transform: rotate(-45deg) scale(1.25);
   z-index: 5;
 }

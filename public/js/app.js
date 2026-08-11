@@ -204,12 +204,24 @@
       zoomControl: false
     });
     L.control.zoom({ position: "topright" }).addTo(state.map);
-    // CARTO dark basemap built on OpenStreetMap data — free, no signup/token required.
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
+    // CARTO Voyager basemap built on OpenStreetMap data — free, no signup/token required.
+    // Chosen over the minimal dark style so street names/roads stay readable for khách.
+    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png", {
       attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
       subdomains: "abcd",
       maxZoom: 20
     }).addTo(state.map);
+
+    // The map panel sits inside a sticky/grid layout, so its final pixel size
+    // isn't settled the instant Leaflet initializes (webfonts still loading,
+    // sticky offsets not yet resolved) — without this, Leaflet caches a wrong
+    // size and renders zoomed out to the whole world. Re-measure whenever the
+    // container actually changes size.
+    requestAnimationFrame(() => state.map.invalidateSize());
+    const mapEl = document.getElementById("map");
+    if (mapEl && window.ResizeObserver) {
+      new ResizeObserver(() => state.map.invalidateSize()).observe(mapEl);
+    }
   }
 
   function updateMapMarkers(projects) {
@@ -247,6 +259,7 @@
       state.markers[p.id] = marker;
     });
 
+    state.map.invalidateSize();
     if (latLngs.length > 1) {
       state.map.fitBounds(L.latLngBounds(latLngs), { padding: [80, 80], maxZoom: 14 });
     } else if (latLngs.length === 1) {

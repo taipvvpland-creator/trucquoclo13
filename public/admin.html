@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>TAIEM — Chỉnh vị trí dự án</title>
+<meta name="robots" content="noindex, nofollow" />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" rel="stylesheet" />
+<link rel="stylesheet" href="/css/style.css" />
+<link rel="stylesheet" href="/css/admin.css" />
+</head>
+<body class="admin-body">
+
+<header class="admin-bar">
+  <div class="admin-bar-title">
+    <span class="brand-mark">T</span>
+    <div>
+      <div class="admin-bar-heading">Chỉnh vị trí dự án</div>
+      <div class="admin-bar-sub">Kéo ghim trên bản đồ tới đúng vị trí thực tế, rồi bấm Lưu.</div>
+    </div>
+  </div>
+  <div class="admin-bar-actions">
+    <input id="adminPassword" type="password" placeholder="Mật khẩu admin" autocomplete="off" />
+    <span id="pendingCount" class="admin-pending-badge" hidden></span>
+    <button id="saveBtn" class="btn-primary" disabled>Lưu tất cả</button>
+  </div>
+</header>
+
+<div id="statusMsg" class="admin-status" hidden></div>
+
+<main class="admin-main">
+  <aside class="admin-sidebar" id="adminList" aria-label="Danh sách dự án"></aside>
+  <div class="admin-map-wrap">
+    <div id="map"></div>
+  </div>
+</main>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="/js/admin.js"></script>
+</body>
+</html>

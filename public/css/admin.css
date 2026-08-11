@@ -1,0 +1,169 @@
+/* Admin coordinate-picker — reuses tokens from style.css */
+
+.admin-body {
+  height: 100vh;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.admin-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid var(--glass-border);
+  flex-wrap: wrap;
+}
+
+.admin-bar-title {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.admin-bar-heading {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+}
+
+.admin-bar-sub {
+  font-size: 12.5px;
+  color: var(--text-tertiary);
+}
+
+.admin-bar-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+#adminPassword {
+  padding: 9px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--glass-border-strong);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+  font-size: 13px;
+  min-height: 40px;
+  width: 160px;
+}
+
+.admin-pending-badge {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--confidence-fg);
+  background: var(--confidence-bg);
+  padding: 5px 12px;
+  border-radius: var(--radius-pill);
+  white-space: nowrap;
+}
+
+.admin-bar-actions .btn-primary {
+  padding: 10px 20px;
+  font-size: 13px;
+  min-height: 40px;
+}
+.admin-bar-actions .btn-primary:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.admin-status {
+  padding: var(--space-2) var(--space-5);
+  font-size: 13px;
+  text-align: center;
+}
+.admin-status.ok { background: var(--status-new-bg); color: var(--status-new-fg); }
+.admin-status.error { background: var(--status-upcoming-bg); color: var(--confidence-fg); }
+
+.admin-main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 380px 1fr;
+  min-height: 0;
+}
+
+.admin-sidebar {
+  overflow-y: auto;
+  padding: var(--space-4);
+  border-right: 1px solid var(--glass-border);
+  background: var(--bg-elevated);
+}
+
+.admin-zone-heading {
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding: var(--space-3) 0 var(--space-1);
+}
+.admin-zone-heading:first-child { padding-top: 0; }
+
+.admin-row {
+  padding: var(--space-3);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-md);
+  margin-bottom: var(--space-2);
+  cursor: pointer;
+  transition: border-color 160ms var(--ease-out), background 160ms var(--ease-out);
+}
+.admin-row:hover { border-color: var(--glass-border-strong); }
+.admin-row.is-selected { border-color: var(--accent); background: var(--glass-bg-strong); }
+.admin-row.is-dirty { border-color: var(--confidence-fg); }
+
+.admin-row-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--space-2);
+}
+
+.admin-row-title { font-weight: 600; font-size: 14px; }
+
+.admin-row-coords {
+  font-family: monospace;
+  font-size: 11.5px;
+  color: var(--text-tertiary);
+  margin-top: 4px;
+}
+
+.admin-row-reset {
+  font-size: 11px;
+  color: var(--confidence-fg);
+  background: none;
+  border: none;
+  padding: 0;
+  margin-top: 6px;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.admin-map-wrap { position: relative; min-height: 0; }
+.admin-map-wrap #map { width: 100%; height: 100%; }
+
+.admin-marker {
+  width: 26px;
+  height: 26px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  background: var(--accent);
+  border: 2px solid #ffffff;
+  box-shadow: 0 4px 14px rgba(15, 40, 30, 0.35);
+  cursor: grab;
+}
+.admin-marker.is-dirty { background: var(--confidence-fg); }
+.admin-marker.is-selected { background: var(--accent-strong); transform: rotate(-45deg) scale(1.3); z-index: 5; }
+
+@media (max-width: 860px) {
+  .admin-main { grid-template-columns: 1fr; grid-template-rows: 45vh 1fr; }
+  .admin-sidebar { border-right: none; border-bottom: 1px solid var(--glass-border); }
+}
