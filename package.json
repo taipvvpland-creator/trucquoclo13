@@ -1,0 +1,19 @@
+{
+  "name": "ql13-map",
+  "version": "1.0.0",
+  "description": "TAIEMCHIA SEBDS - Ban do tra cuu du an can ho doc truc Quoc Lo 13",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "express": "^4.19.2",
+    "dotenv": "^16.4.5"
+  },
+  "license": "UNLICENSED",
+  "private": true
+}
