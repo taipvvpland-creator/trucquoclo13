@@ -34,6 +34,15 @@ app.get('/api/projects', (req, res) => {
 // coordinate-editing tool, not real user auth, so a fallback is acceptable.
 const ADMIN_PASSWORD_FALLBACK = 'vttai2512';
 
+function validCoordUpdates(list) {
+  for (const u of list) {
+    const latOk = typeof u.lat === 'number' && u.lat >= VN_BOUNDS.latMin && u.lat <= VN_BOUNDS.latMax;
+    const lngOk = typeof u.lng === 'number' && u.lng >= VN_BOUNDS.lngMin && u.lng <= VN_BOUNDS.lngMax;
+    if (!u.id || !latOk || !lngOk) return false;
+  }
+  return true;
+}
+
 app.post('/api/admin/save-coords', (req, res) => {
   const adminPassword = process.env.ADMIN_PASSWORD || ADMIN_PASSWORD_FALLBACK;
   if (req.body.password !== adminPassword) {
@@ -42,17 +51,14 @@ app.post('/api/admin/save-coords', (req, res) => {
   }
 
   const updates = Array.isArray(req.body.updates) ? req.body.updates : [];
-  if (updates.length === 0) {
+  const landmarkUpdates = Array.isArray(req.body.landmarkUpdates) ? req.body.landmarkUpdates : [];
+  if (updates.length === 0 && landmarkUpdates.length === 0) {
     res.status(400).json({ error: 'Khong co thay doi nao duoc gui len' });
     return;
   }
-  for (const u of updates) {
-    const latOk = typeof u.lat === 'number' && u.lat >= VN_BOUNDS.latMin && u.lat <= VN_BOUNDS.latMax;
-    const lngOk = typeof u.lng === 'number' && u.lng >= VN_BOUNDS.lngMin && u.lng <= VN_BOUNDS.lngMax;
-    if (!u.id || !latOk || !lngOk) {
-      res.status(400).json({ error: `Toa do khong hop le cho "${u.id || '?'}"` });
-      return;
-    }
+  if (!validCoordUpdates(updates) || !validCoordUpdates(landmarkUpdates)) {
+    res.status(400).json({ error: 'Toa do khong hop le' });
+    return;
   }
 
   fs.readFile(PROJECTS_PATH, 'utf8', (err, raw) => {
@@ -79,12 +85,22 @@ app.post('/api/admin/save-coords', (req, res) => {
       }
     });
 
+    let landmarksChanged = 0;
+    landmarkUpdates.forEach((u) => {
+      const landmark = (data.landmarks || []).find((l) => l.id === u.id);
+      if (landmark) {
+        landmark.lat = u.lat;
+        landmark.lng = u.lng;
+        landmarksChanged++;
+      }
+    });
+
     fs.writeFile(PROJECTS_PATH, JSON.stringify(data, null, 2), 'utf8', (writeErr) => {
       if (writeErr) {
         res.status(500).json({ error: 'Khong ghi duoc file du lieu' });
         return;
       }
-      res.json({ ok: true, changed });
+      res.json({ ok: true, changed, landmarksChanged });
     });
   });
 });

@@ -44,12 +44,12 @@
   function contactHref(kind) {
     var c = window.CONTACT || {};
     if (kind === "tel") return "tel:" + (c.phone || "");
-    return c.zaloUrl || "#";
+    return c.facebookUrl || "#";
   }
 
   function wireGlobalContacts() {
     document.querySelectorAll("#navContact, #heroContact, #footerContact").forEach(function (el) {
-      el.href = contactHref("zalo");
+      el.href = contactHref("facebook");
     });
   }
 
@@ -156,7 +156,7 @@
       handoverHtml +
       '<div class="card-bottom">' +
         '<div class="card-price">' + money(p) + (unit ? '<span>' + unit + '</span>' : '') + '</div>' +
-        '<a class="card-contact" href="' + contactHref("zalo") + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Liên hệ tư vấn</a>' +
+        '<a class="card-contact" href="' + contactHref("facebook") + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Liên hệ tư vấn</a>' +
       '</div>';
 
     var activate = function () { focusProject(p.id, true); };
@@ -229,7 +229,7 @@
     if (p.handoverExpected) {
       html += '<div class="popup-handover">Dự kiến bàn giao: ' + p.handoverExpected + '</div>';
     }
-    html += '<a class="popup-contact-btn" href="' + contactHref("zalo") + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Liên hệ tư vấn</a>';
+    html += '<a class="popup-contact-btn" href="' + contactHref("facebook") + '" target="_blank" rel="noopener" onclick="event.stopPropagation()">Liên hệ tư vấn</a>';
     html += '</div>';
     return html;
   }

@@ -1,28 +1,47 @@
 (function () {
   "use strict";
 
+  const LANDMARK_EMOJI = {
+    shopping: "🛒",
+    hospital: "🏥",
+    market: "🏪",
+    golf: "⛳"
+  };
+
   const state = {
     data: null,
     map: null,
-    markers: {}, // id -> L.Marker
-    pending: {}, // id -> { lat, lng }
+    view: "projects", // "projects" | "landmarks"
+    markers: {}, // id -> L.Marker (projects)
+    landmarkMarkers: {}, // id -> L.Marker (landmarks)
+    pending: {}, // id -> { lat, lng } (projects)
+    pendingLandmarks: {}, // id -> { lat, lng }
     selectedId: null
   };
 
   function savePendingToStorage() {
-    try { localStorage.setItem("taiem_admin_pending", JSON.stringify(state.pending)); } catch (e) {}
+    try {
+      localStorage.setItem("taiem_admin_pending", JSON.stringify(state.pending));
+      localStorage.setItem("taiem_admin_pending_landmarks", JSON.stringify(state.pendingLandmarks));
+    } catch (e) {}
   }
 
   function loadPendingFromStorage() {
+    var result = { projects: null, landmarks: null };
     try {
       var saved = localStorage.getItem("taiem_admin_pending");
-      if (saved) return JSON.parse(saved);
+      if (saved) result.projects = JSON.parse(saved);
+      var savedLm = localStorage.getItem("taiem_admin_pending_landmarks");
+      if (savedLm) result.landmarks = JSON.parse(savedLm);
     } catch (e) {}
-    return null;
+    return result;
   }
 
   function clearPendingStorage() {
-    try { localStorage.removeItem("taiem_admin_pending"); } catch (e) {}
+    try {
+      localStorage.removeItem("taiem_admin_pending");
+      localStorage.removeItem("taiem_admin_pending_landmarks");
+    } catch (e) {}
   }
 
   function showStatus(msg, kind) {
@@ -35,38 +54,64 @@
     }
   }
 
+  function totalPendingCount() {
+    return Object.keys(state.pending).length + Object.keys(state.pendingLandmarks).length;
+  }
+
   function updatePendingUI() {
-    const ids = Object.keys(state.pending);
+    const count = totalPendingCount();
     const badge = document.getElementById("pendingCount");
     const saveBtn = document.getElementById("saveBtn");
-    if (ids.length > 0) {
+    if (count > 0) {
       badge.hidden = false;
-      badge.textContent = `${ids.length} thay đổi chưa lưu`;
+      badge.textContent = `${count} thay đổi chưa lưu`;
     } else {
       badge.hidden = true;
     }
-    saveBtn.disabled = ids.length === 0;
+    saveBtn.disabled = count === 0;
   }
 
   function currentCoords(p) {
     return state.pending[p.id] || { lat: p.lat, lng: p.lng };
   }
 
+  function currentLandmarkCoords(l) {
+    return state.pendingLandmarks[l.id] || { lat: l.lat, lng: l.lng };
+  }
+
+  // ---------- View switching ----------
+  function setView(view) {
+    state.view = view;
+    document.getElementById("tabProjects").classList.toggle("is-active", view === "projects");
+    document.getElementById("tabLandmarks").classList.toggle("is-active", view === "landmarks");
+    Object.values(state.markers).forEach((m) => { m.getElement() && (m.getElement().style.display = view === "projects" ? "" : "none"); });
+    Object.values(state.landmarkMarkers).forEach((m) => { m.getElement() && (m.getElement().style.display = view === "landmarks" ? "" : "none"); });
+    renderSidebar();
+  }
+
+  // ---------- Projects sidebar ----------
   function renderSidebar() {
     const list = document.getElementById("adminList");
     list.innerHTML = "";
-    let lastZone = null;
-    state.data.projects.forEach((p) => {
-      if (p.zone !== lastZone) {
-        const zoneInfo = state.data.zones.find((z) => z.id === p.zone);
-        const h = document.createElement("div");
-        h.className = "admin-zone-heading";
-        h.textContent = zoneInfo ? zoneInfo.name : p.zone;
-        list.appendChild(h);
-        lastZone = p.zone;
-      }
-      list.appendChild(renderRow(p));
-    });
+
+    if (state.view === "projects") {
+      let lastZone = null;
+      state.data.projects.forEach((p) => {
+        if (p.zone !== lastZone) {
+          const zoneInfo = state.data.zones.find((z) => z.id === p.zone);
+          const h = document.createElement("div");
+          h.className = "admin-zone-heading";
+          h.textContent = zoneInfo ? zoneInfo.name : p.zone;
+          list.appendChild(h);
+          lastZone = p.zone;
+        }
+        list.appendChild(renderRow(p));
+      });
+    } else {
+      (state.data.landmarks || []).forEach((l) => {
+        list.appendChild(renderLandmarkRow(l));
+      });
+    }
   }
 
   function renderRow(p) {
@@ -102,6 +147,40 @@
     return row;
   }
 
+  function renderLandmarkRow(l) {
+    const row = document.createElement("div");
+    row.className = "admin-row";
+    row.id = `lm-row-${l.id}`;
+    row.dataset.id = l.id;
+    if (state.pendingLandmarks[l.id]) row.classList.add("is-dirty");
+    if (state.selectedId === l.id) row.classList.add("is-selected");
+
+    const c = currentLandmarkCoords(l);
+    const emoji = LANDMARK_EMOJI[l.type] || "📍";
+    row.innerHTML = `
+      <div class="admin-row-top">
+        <div class="admin-row-title">${emoji} ${l.name}</div>
+      </div>
+      <div class="admin-row-coords">${c.lat.toFixed(5)}, ${c.lng.toFixed(5)} ${state.pendingLandmarks[l.id] ? "· chưa lưu" : ""}</div>
+      ${state.pendingLandmarks[l.id] ? `<button class="admin-row-reset" data-id="${l.id}">Đặt lại vị trí cũ</button>` : ""}
+    `;
+
+    row.addEventListener("click", (e) => {
+      if (e.target.classList.contains("admin-row-reset")) return;
+      selectLandmark(l.id, true);
+    });
+
+    const resetBtn = row.querySelector(".admin-row-reset");
+    if (resetBtn) {
+      resetBtn.addEventListener("click", (e) => {
+        e.stopPropagation();
+        resetLandmark(l.id);
+      });
+    }
+
+    return row;
+  }
+
   function selectProject(id, flyTo) {
     document.querySelectorAll(".admin-row.is-selected").forEach((r) => r.classList.remove("is-selected"));
     document.getElementById(`row-${id}`)?.classList.add("is-selected");
@@ -118,6 +197,22 @@
     }
   }
 
+  function selectLandmark(id, flyTo) {
+    document.querySelectorAll(".admin-row.is-selected").forEach((r) => r.classList.remove("is-selected"));
+    document.getElementById(`lm-row-${id}`)?.classList.add("is-selected");
+    Object.entries(state.landmarkMarkers).forEach(([lid, marker]) => {
+      marker.getElement()?.classList.toggle("is-selected", lid === id);
+    });
+    state.selectedId = id;
+
+    if (flyTo && state.map) {
+      const l = state.data.landmarks.find((x) => x.id === id);
+      const c = currentLandmarkCoords(l);
+      state.map.flyTo([c.lat, c.lng], 16, { duration: 0.7 });
+      state.landmarkMarkers[id]?.openPopup();
+    }
+  }
+
   function resetProject(id) {
     delete state.pending[id];
     const p = state.data.projects.find((x) => x.id === id);
@@ -131,11 +226,31 @@
     savePendingToStorage();
   }
 
+  function resetLandmark(id) {
+    delete state.pendingLandmarks[id];
+    const l = state.data.landmarks.find((x) => x.id === id);
+    const marker = state.landmarkMarkers[id];
+    if (marker) {
+      marker.setLatLng([l.lat, l.lng]);
+      marker.getElement()?.classList.remove("is-dirty");
+    }
+    refreshLandmarkRow(id);
+    updatePendingUI();
+    savePendingToStorage();
+  }
+
   function refreshRow(id) {
     const p = state.data.projects.find((x) => x.id === id);
     const old = document.getElementById(`row-${id}`);
     if (old) old.replaceWith(renderRow(p));
     if (state.selectedId === id) selectProject(id, false);
+  }
+
+  function refreshLandmarkRow(id) {
+    const l = state.data.landmarks.find((x) => x.id === id);
+    const old = document.getElementById(`lm-row-${id}`);
+    if (old) old.replaceWith(renderLandmarkRow(l));
+    if (state.selectedId === id) selectLandmark(id, false);
   }
 
   function initMap() {
@@ -175,6 +290,35 @@
     if (bounds.length) state.map.fitBounds(L.latLngBounds(bounds), { padding: [60, 60], maxZoom: 14 });
   }
 
+  function addLandmarkMarkers() {
+    (state.data.landmarks || []).forEach((l) => {
+      const emoji = LANDMARK_EMOJI[l.type] || "📍";
+      const icon = L.divIcon({
+        className: "admin-landmark-marker",
+        html: `<span>${emoji}</span>`,
+        iconSize: [30, 30],
+        iconAnchor: [15, 15]
+      });
+      const marker = L.marker([l.lat, l.lng], { icon, draggable: true })
+        .addTo(state.map)
+        .bindPopup(`<strong>${l.name}</strong>`);
+
+      marker.getElement() && (marker.getElement().style.display = "none");
+
+      marker.on("click", () => selectLandmark(l.id, false));
+      marker.on("dragend", () => {
+        const ll = marker.getLatLng();
+        state.pendingLandmarks[l.id] = { lat: ll.lat, lng: ll.lng };
+        marker.getElement()?.classList.add("is-dirty");
+        refreshLandmarkRow(l.id);
+        updatePendingUI();
+        savePendingToStorage();
+      });
+
+      state.landmarkMarkers[l.id] = marker;
+    });
+  }
+
   async function saveAll() {
     const password = document.getElementById("adminPassword").value;
     if (!password) {
@@ -182,7 +326,8 @@
       return;
     }
     const updates = Object.entries(state.pending).map(([id, c]) => ({ id, lat: c.lat, lng: c.lng }));
-    if (updates.length === 0) return;
+    const landmarkUpdates = Object.entries(state.pendingLandmarks).map(([id, c]) => ({ id, lat: c.lat, lng: c.lng }));
+    if (updates.length === 0 && landmarkUpdates.length === 0) return;
 
     const saveBtn = document.getElementById("saveBtn");
     saveBtn.disabled = true;
@@ -192,7 +337,7 @@
       const res = await fetch("/api/admin/save-coords", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ password, updates })
+        body: JSON.stringify({ password, updates, landmarkUpdates })
       });
       const body = await res.json();
       if (!res.ok) {
@@ -206,16 +351,25 @@
         p.coordConfidence = "verified";
         state.markers[u.id]?.getElement()?.classList.remove("is-dirty");
       });
+      landmarkUpdates.forEach((u) => {
+        const l = state.data.landmarks.find((x) => x.id === u.id);
+        if (l) {
+          l.lat = u.lat;
+          l.lng = u.lng;
+        }
+        state.landmarkMarkers[u.id]?.getElement()?.classList.remove("is-dirty");
+      });
       state.pending = {};
+      state.pendingLandmarks = {};
       clearPendingStorage();
       renderSidebar();
       updatePendingUI();
-      showStatus(`Đã lưu ${body.changed} vị trí.`, "ok");
+      showStatus(`Đã lưu ${body.changed || 0} dự án, ${body.landmarksChanged || 0} tiện ích.`, "ok");
     } catch (err) {
       showStatus("Không kết nối được tới server.", "error");
     } finally {
       saveBtn.textContent = "Lưu tất cả";
-      saveBtn.disabled = Object.keys(state.pending).length === 0;
+      saveBtn.disabled = totalPendingCount() === 0;
     }
   }
 
@@ -225,25 +379,44 @@
       state.data = await res.json();
       initMap();
       addMarkers();
+      addLandmarkMarkers();
 
       var savedPending = loadPendingFromStorage();
-      if (savedPending && Object.keys(savedPending).length > 0) {
-        Object.entries(savedPending).forEach(([id, coords]) => {
+      var restoredCount = 0;
+
+      if (savedPending.projects && Object.keys(savedPending.projects).length > 0) {
+        Object.entries(savedPending.projects).forEach(([id, coords]) => {
           const marker = state.markers[id];
           if (marker) {
             marker.setLatLng([coords.lat, coords.lng]);
             marker.getElement()?.classList.add("is-dirty");
             state.pending[id] = coords;
+            restoredCount++;
           }
         });
-        renderSidebar();
-        updatePendingUI();
-        showStatus("Đã khôi phục " + Object.keys(savedPending).length + " thay đổi chưa lưu từ phiên trước.", "ok");
-      } else {
-        renderSidebar();
+      }
+
+      if (savedPending.landmarks && Object.keys(savedPending.landmarks).length > 0) {
+        Object.entries(savedPending.landmarks).forEach(([id, coords]) => {
+          const marker = state.landmarkMarkers[id];
+          if (marker) {
+            marker.setLatLng([coords.lat, coords.lng]);
+            marker.getElement()?.classList.add("is-dirty");
+            state.pendingLandmarks[id] = coords;
+            restoredCount++;
+          }
+        });
+      }
+
+      renderSidebar();
+      updatePendingUI();
+      if (restoredCount > 0) {
+        showStatus("Đã khôi phục " + restoredCount + " thay đổi chưa lưu từ phiên trước.", "ok");
       }
 
       document.getElementById("saveBtn").addEventListener("click", saveAll);
+      document.getElementById("tabProjects").addEventListener("click", () => setView("projects"));
+      document.getElementById("tabLandmarks").addEventListener("click", () => setView("landmarks"));
     } catch (err) {
       showStatus("Không tải được dữ liệu dự án.", "error");
     }
