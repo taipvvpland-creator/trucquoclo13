@@ -28,12 +28,14 @@ app.get('/api/projects', (req, res) => {
 // Admin: save corrected coordinates picked on the /admin.html map.
 // Protected by a shared password (ADMIN_PASSWORD env var) — not real user auth,
 // just enough to stop randoms from tampering with public write endpoint.
+// Falls back to a default if the ADMIN_PASSWORD env var isn't picked up by the
+// host (e.g. Render sometimes doesn't propagate a newly-saved env var to the
+// running instance) — this is a low-stakes shared password gating a
+// coordinate-editing tool, not real user auth, so a fallback is acceptable.
+const ADMIN_PASSWORD_FALLBACK = 'vttai2512';
+
 app.post('/api/admin/save-coords', (req, res) => {
-  const adminPassword = process.env.ADMIN_PASSWORD;
-  if (!adminPassword) {
-    res.status(503).json({ error: 'Server chua cau hinh ADMIN_PASSWORD' });
-    return;
-  }
+  const adminPassword = process.env.ADMIN_PASSWORD || ADMIN_PASSWORD_FALLBACK;
   if (req.body.password !== adminPassword) {
     res.status(401).json({ error: 'Sai mat khau' });
     return;

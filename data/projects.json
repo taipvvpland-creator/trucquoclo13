@@ -3,41 +3,68 @@
   "source": "Google Sheets + danh_sach_du_an_QL13.pdf",
   "corridor": "Quốc Lộ 13 — từ ngã tư Hiệp Bình Phước (TP. Thủ Đức) đến Vành Đai 3, Thuận An, Bình Dương",
   "zones": [
-    { "id": "thu-duc", "name": "Khu vực Thủ Đức (TP.HCM)" },
-    { "id": "vinh-phu-binh-hoa", "name": "Khu vực P. Vĩnh Phú – P. Bình Hòa, Thuận An" },
-    { "id": "lai-thieu", "name": "Khu vực P. Lái Thiêu, Thuận An" },
-    { "id": "thuan-giao", "name": "Khu vực P. Thuận Giao, Thuận An" },
-    { "id": "hung-dinh", "name": "Khu vực P. Hưng Định, Thuận An" }
+    {
+      "id": "thu-duc",
+      "name": "Khu vực Thủ Đức (TP.HCM)"
+    },
+    {
+      "id": "vinh-phu-binh-hoa",
+      "name": "Khu vực P. Vĩnh Phú – P. Bình Hòa, Thuận An"
+    },
+    {
+      "id": "lai-thieu",
+      "name": "Khu vực P. Lái Thiêu, Thuận An"
+    },
+    {
+      "id": "thuan-giao",
+      "name": "Khu vực P. Thuận Giao, Thuận An"
+    },
+    {
+      "id": "hung-dinh",
+      "name": "Khu vực P. Hưng Định, Thuận An"
+    }
   ],
   "statusOptions": [
-    { "id": "new", "label": "Mở bán mới" },
-    { "id": "selling", "label": "Đang bán" },
-    { "id": "handed-over", "label": "Đã bàn giao" },
-    { "id": "upcoming", "label": "Chưa mở bán" }
+    {
+      "id": "new",
+      "label": "Mở bán mới"
+    },
+    {
+      "id": "selling",
+      "label": "Đang bán"
+    },
+    {
+      "id": "handed-over",
+      "label": "Đã bàn giao"
+    },
+    {
+      "id": "upcoming",
+      "label": "Chưa mở bán"
+    }
   ],
   "landmarks": [
     {
       "id": "lotte-mart",
       "name": "Lotte Mart Thuận An",
       "type": "shopping",
-      "lat": 10.9050,
-      "lng": 106.7100,
+      "lat": 10.905,
+      "lng": 106.71,
       "minZoom": 13
     },
     {
       "id": "aeon-mall",
       "name": "AEON Mall Bình Dương Canary",
       "type": "shopping",
-      "lat": 10.9340,
-      "lng": 106.7090,
+      "lat": 10.934,
+      "lng": 106.709,
       "minZoom": 13
     },
     {
       "id": "go-binh-duong",
       "name": "GO! Bình Dương (Big C cũ)",
       "type": "shopping",
-      "lat": 10.9260,
-      "lng": 106.7080,
+      "lat": 10.926,
+      "lng": 106.708,
       "minZoom": 14
     },
     {
@@ -45,14 +72,14 @@
       "name": "Chợ Lái Thiêu",
       "type": "market",
       "lat": 10.8985,
-      "lng": 106.7060,
+      "lng": 106.706,
       "minZoom": 14
     },
     {
       "id": "cho-bung",
       "name": "Chợ Búng",
       "type": "market",
-      "lat": 10.9140,
+      "lat": 10.914,
       "lng": 106.7015,
       "minZoom": 14
     },
@@ -60,24 +87,24 @@
       "id": "bv-thuan-an",
       "name": "BV Đa khoa Thuận An",
       "type": "hospital",
-      "lat": 10.9180,
-      "lng": 106.7050,
+      "lat": 10.918,
+      "lng": 106.705,
       "minZoom": 14
     },
     {
       "id": "bv-columbia",
       "name": "BV Columbia Asia Bình Dương",
       "type": "hospital",
-      "lat": 10.8770,
-      "lng": 106.7140,
+      "lat": 10.877,
+      "lng": 106.714,
       "minZoom": 14
     },
     {
       "id": "golf-song-be",
       "name": "Sân Golf Sông Bé",
       "type": "golf",
-      "lat": 10.9240,
-      "lng": 106.7130,
+      "lat": 10.924,
+      "lng": 106.713,
       "minZoom": 13
     }
   ],
@@ -88,9 +115,12 @@
       "developer": "Vạn Phúc Group",
       "zone": "thu-duc",
       "address": "MT Quốc Lộ 13, P. Hiệp Bình Phước, TP. Thủ Đức",
-      "priceMin": 80, "priceMax": 120, "priceUnit": "tr/m²",
+      "priceMin": 80,
+      "priceMax": 120,
+      "priceUnit": "tr/m²",
       "status": "new",
-      "lat": 10.858, "lng": 106.726,
+      "lat": 10.858,
+      "lng": 106.726,
       "coordConfidence": "estimated"
     },
     {
@@ -99,9 +129,12 @@
       "developer": "Kusto Home",
       "zone": "thu-duc",
       "address": "Đường số 6, P. Hiệp Bình Phước, TP. Thủ Đức",
-      "priceMin": 68, "priceMax": 70, "priceUnit": "tr/m²",
+      "priceMin": 68,
+      "priceMax": 70,
+      "priceUnit": "tr/m²",
       "status": "selling",
-      "lat": 10.8470, "lng": 106.7234,
+      "lat": 10.847,
+      "lng": 106.7234,
       "coordConfidence": "landmark"
     },
     {
@@ -110,9 +143,13 @@
       "developer": "Lê Phong Group",
       "zone": "vinh-phu-binh-hoa",
       "address": "MT QL13 & Vĩnh Phú 10, P. Bình Hòa, TP. Thuận An",
-      "priceMin": 70, "priceMax": 70, "priceUnit": "tr/m²", "priceApprox": true,
+      "priceMin": 70,
+      "priceMax": 70,
+      "priceUnit": "tr/m²",
+      "priceApprox": true,
       "status": "new",
-      "lat": 10.868, "lng": 106.720,
+      "lat": 10.868,
+      "lng": 106.72,
       "coordConfidence": "estimated"
     },
     {
@@ -121,9 +158,12 @@
       "developer": "Lê Phong Group",
       "zone": "vinh-phu-binh-hoa",
       "address": "68 Vĩnh Phú 16 & QL13, P. Vĩnh Phú, TP. Thuận An",
-      "priceMin": 48, "priceMax": 52, "priceUnit": "tr/m²",
+      "priceMin": 48,
+      "priceMax": 52,
+      "priceUnit": "tr/m²",
       "status": "new",
-      "lat": 10.872, "lng": 106.717,
+      "lat": 10.872,
+      "lng": 106.717,
       "coordConfidence": "estimated"
     },
     {
@@ -132,9 +172,12 @@
       "developer": "A&T Group",
       "zone": "vinh-phu-binh-hoa",
       "address": "Ven sông Sài Gòn, từ QL13 vào Vĩnh Phú 17A, P. Bình Hòa",
-      "priceMin": 52, "priceMax": 55, "priceUnit": "tr/m²",
+      "priceMin": 52,
+      "priceMax": 55,
+      "priceUnit": "tr/m²",
       "status": "new",
-      "lat": 10.870, "lng": 106.723,
+      "lat": 10.87,
+      "lng": 106.723,
       "coordConfidence": "estimated"
     },
     {
@@ -143,9 +186,12 @@
       "developer": "STC Corporation",
       "zone": "vinh-phu-binh-hoa",
       "address": "MT Quốc Lộ 13, P. Vĩnh Phú, TP. Thuận An",
-      "priceMin": 38, "priceMax": 41, "priceUnit": "tr/m²",
+      "priceMin": 38,
+      "priceMax": 41,
+      "priceUnit": "tr/m²",
       "status": "selling",
-      "lat": 10.876, "lng": 106.714,
+      "lat": 10.876,
+      "lng": 106.714,
       "coordConfidence": "estimated"
     },
     {
@@ -154,9 +200,12 @@
       "developer": "Nam Hiệp Thành",
       "zone": "vinh-phu-binh-hoa",
       "address": "MT Quốc Lộ 13, P. Vĩnh Phú, TP. Thuận An",
-      "priceMin": 38, "priceMax": 42, "priceUnit": "tr/m²",
+      "priceMin": 38,
+      "priceMax": 42,
+      "priceUnit": "tr/m²",
       "status": "selling",
-      "lat": 10.877, "lng": 106.713,
+      "lat": 10.877,
+      "lng": 106.713,
       "coordConfidence": "estimated"
     },
     {
@@ -165,9 +214,12 @@
       "developer": "Đạt Phước (HKK)",
       "zone": "vinh-phu-binh-hoa",
       "address": "MT QL13, giao Vĩnh Phú 29, P. Vĩnh Phú, TP. Thuận An",
-      "priceMin": 35, "priceMax": 37, "priceUnit": "tr/m²",
+      "priceMin": 35,
+      "priceMax": 37,
+      "priceUnit": "tr/m²",
       "status": "handed-over",
-      "lat": 10.879, "lng": 106.711,
+      "lat": 10.879,
+      "lng": 106.711,
       "coordConfidence": "estimated"
     },
     {
@@ -176,9 +228,12 @@
       "developer": "Lê Phong Group",
       "zone": "lai-thieu",
       "address": "MT QL13, P. Lái Thiêu, TP. Thuận An",
-      "priceMin": 49.9, "priceMax": 53, "priceUnit": "tr/m²",
+      "priceMin": 49.9,
+      "priceMax": 53,
+      "priceUnit": "tr/m²",
       "status": "new",
-      "lat": 10.884, "lng": 106.708,
+      "lat": 10.884,
+      "lng": 106.708,
       "coordConfidence": "estimated"
     },
     {
@@ -187,9 +242,13 @@
       "developer": "SkyWorld Development (Malaysia)",
       "zone": "lai-thieu",
       "address": "MT QL13, P. Lái Thiêu, kế Lotte Mart",
-      "priceMin": 50, "priceMax": 50, "priceUnit": "tr/m²", "priceFrom": true,
+      "priceMin": 50,
+      "priceMax": 50,
+      "priceUnit": "tr/m²",
+      "priceFrom": true,
       "status": "new",
-      "lat": 10.9055, "lng": 106.7110,
+      "lat": 10.9055,
+      "lng": 106.711,
       "coordConfidence": "landmark"
     },
     {
@@ -198,9 +257,12 @@
       "developer": "Bcons Group",
       "zone": "lai-thieu",
       "address": "MT QL13, P. Lái Thiêu, TP. Thuận An",
-      "priceMin": 45, "priceMax": 48, "priceUnit": "tr/m²",
+      "priceMin": 45,
+      "priceMax": 48,
+      "priceUnit": "tr/m²",
       "status": "new",
-      "lat": 10.889, "lng": 106.706,
+      "lat": 10.889,
+      "lng": 106.706,
       "coordConfidence": "estimated"
     },
     {
@@ -209,9 +271,12 @@
       "developer": "Phát Đạt + Danh Khôi",
       "zone": "lai-thieu",
       "address": "MT QL13, P. Lái Thiêu, TP. Thuận An",
-      "priceMin": 48, "priceMax": 52, "priceUnit": "tr/m²",
+      "priceMin": 48,
+      "priceMax": 52,
+      "priceUnit": "tr/m²",
       "status": "selling",
-      "lat": 10.894, "lng": 106.705,
+      "lat": 10.894,
+      "lng": 106.705,
       "coordConfidence": "estimated"
     },
     {
@@ -220,9 +285,12 @@
       "developer": "Lê Phong + Coteccons",
       "zone": "lai-thieu",
       "address": "MT QL13, P. Lái Thiêu, TP. Thuận An",
-      "priceMin": 55, "priceMax": 60, "priceUnit": "tr/m²",
+      "priceMin": 55,
+      "priceMax": 60,
+      "priceUnit": "tr/m²",
       "status": "selling",
-      "lat": 10.898, "lng": 106.704,
+      "lat": 10.898,
+      "lng": 106.704,
       "coordConfidence": "estimated"
     },
     {
@@ -231,9 +299,12 @@
       "developer": "SP Setia (Malaysia)",
       "zone": "lai-thieu",
       "address": "MT QL13, P. Lái Thiêu, TP. Thuận An",
-      "priceMin": 46, "priceMax": 50, "priceUnit": "tr/m²",
+      "priceMin": 46,
+      "priceMax": 50,
+      "priceUnit": "tr/m²",
       "status": "handed-over",
-      "lat": 10.900, "lng": 106.703,
+      "lat": 10.9,
+      "lng": 106.703,
       "coordConfidence": "estimated"
     },
     {
@@ -242,9 +313,12 @@
       "developer": "Sembcorp + VSIP",
       "zone": "lai-thieu",
       "address": "MT QL13, P. Lái Thiêu, TP. Thuận An",
-      "priceMin": 40, "priceMax": 43, "priceUnit": "tr/m²",
+      "priceMin": 40,
+      "priceMax": 43,
+      "priceUnit": "tr/m²",
       "status": "handed-over",
-      "lat": 10.902, "lng": 106.702,
+      "lat": 10.902,
+      "lng": 106.702,
       "coordConfidence": "estimated"
     },
     {
@@ -253,9 +327,12 @@
       "developer": "Lê Phong",
       "zone": "lai-thieu",
       "address": "MT QL13, P. Lái Thiêu, TP. Thuận An",
-      "priceMin": 46, "priceMax": 52, "priceUnit": "tr/m²",
+      "priceMin": 46,
+      "priceMax": 52,
+      "priceUnit": "tr/m²",
       "status": "handed-over",
-      "lat": 10.9044, "lng": 106.7005,
+      "lat": 10.9044,
+      "lng": 106.7005,
       "coordConfidence": "estimated"
     },
     {
@@ -264,9 +341,12 @@
       "developer": "Gamuda Land",
       "zone": "thuan-giao",
       "address": "MT QL13, P. Thuận Giao, TP. Thuận An (cạnh Aeon Mall)",
-      "priceMin": 55, "priceMax": 65, "priceUnit": "tr/m²",
+      "priceMin": 55,
+      "priceMax": 65,
+      "priceUnit": "tr/m²",
       "status": "new",
-      "lat": 10.9318, "lng": 106.7118,
+      "lat": 10.9318,
+      "lng": 106.7118,
       "coordConfidence": "landmark"
     },
     {
@@ -275,9 +355,13 @@
       "developer": "Gamuda Land",
       "zone": "thuan-giao",
       "address": "MT QL13, P. Thuận Giao, TP. Thuận An (đối diện Golf Sông Bé)",
-      "priceMin": 55, "priceMax": 55, "priceUnit": "tr/m²", "priceFrom": true,
+      "priceMin": 55,
+      "priceMax": 55,
+      "priceUnit": "tr/m²",
+      "priceFrom": true,
       "status": "new",
-      "lat": 10.9248, "lng": 106.7068,
+      "lat": 10.9248,
+      "lng": 106.7068,
       "coordConfidence": "landmark"
     },
     {
@@ -286,9 +370,12 @@
       "developer": "Phát Đạt + Mitsubishi + Tokyu Land",
       "zone": "thuan-giao",
       "address": "Nguyễn Thị Minh Khai, P. Thuận Giao, TP. Thuận An",
-      "priceMin": 48, "priceMax": 52, "priceUnit": "tr/m²",
+      "priceMin": 48,
+      "priceMax": 52,
+      "priceUnit": "tr/m²",
       "status": "new",
-      "lat": 10.928, "lng": 106.716,
+      "lat": 10.928,
+      "lng": 106.716,
       "coordConfidence": "estimated"
     },
     {
@@ -297,9 +384,12 @@
       "developer": "Tyson An Phú",
       "zone": "thuan-giao",
       "address": "P. Thuận Giao, TP. Thuận An (gần QL13, CMT8, Ngô Quyền)",
-      "priceMin": 36, "priceMax": 38, "priceUnit": "tr/m²",
+      "priceMin": 36,
+      "priceMax": 38,
+      "priceUnit": "tr/m²",
       "status": "selling",
-      "lat": 10.930, "lng": 106.713,
+      "lat": 10.93,
+      "lng": 106.713,
       "coordConfidence": "estimated"
     },
     {
@@ -308,9 +398,12 @@
       "developer": "Tecco Miền Nam",
       "zone": "thuan-giao",
       "address": "MT QL13, P. Thuận Giao, TP. Thuận An",
-      "priceMin": 39, "priceMax": 42, "priceUnit": "tr/m²",
+      "priceMin": 39,
+      "priceMax": 42,
+      "priceUnit": "tr/m²",
       "status": "selling",
-      "lat": 10.929, "lng": 106.709,
+      "lat": 10.929,
+      "lng": 106.709,
       "coordConfidence": "estimated"
     },
     {
@@ -319,9 +412,13 @@
       "developer": "Phát Đạt",
       "zone": "thuan-giao",
       "address": "Nguyễn Thị Minh Khai, P. Thuận Giao, TP. Thuận An",
-      "priceMin": null, "priceMax": null, "priceUnit": "", "priceUnannounced": true,
+      "priceMin": null,
+      "priceMax": null,
+      "priceUnit": "",
+      "priceUnannounced": true,
       "status": "upcoming",
-      "lat": 10.927, "lng": 106.717,
+      "lat": 10.927,
+      "lng": 106.717,
       "coordConfidence": "estimated"
     },
     {
@@ -330,9 +427,12 @@
       "developer": "Lê Phong Group",
       "zone": "hung-dinh",
       "address": "Nguyễn Chí Thanh, P. Hưng Định, TP. Thuận An (giáp QL13)",
-      "priceMin": 38, "priceMax": 40, "priceUnit": "tr/m²",
+      "priceMin": 38,
+      "priceMax": 40,
+      "priceUnit": "tr/m²",
       "status": "selling",
-      "lat": 10.9395, "lng": 106.6935,
+      "lat": 10.9395,
+      "lng": 106.6935,
       "coordConfidence": "estimated"
     }
   ]
