@@ -44,6 +44,64 @@
     } catch (e) {}
   }
 
+  function saveVerifiedBackup() {
+    try {
+      var backup = { projects: {}, landmarks: {} };
+      state.data.projects.forEach(function(p) {
+        backup.projects[p.id] = { lat: p.lat, lng: p.lng, conf: p.coordConfidence };
+      });
+      (state.data.landmarks || []).forEach(function(l) {
+        backup.landmarks[l.id] = { lat: l.lat, lng: l.lng };
+      });
+      localStorage.setItem("taiem_verified_backup", JSON.stringify(backup));
+    } catch(e) {}
+  }
+
+  function restoreFromBackup() {
+    try {
+      var raw = localStorage.getItem("taiem_verified_backup");
+      if (!raw) return 0;
+      var backup = JSON.parse(raw);
+      var restored = 0;
+
+      if (backup.projects) {
+        state.data.projects.forEach(function(p) {
+          if (state.pending[p.id]) return;
+          var saved = backup.projects[p.id];
+          if (!saved) return;
+          if (saved.conf === "verified" && p.coordConfidence === "estimated") {
+            state.pending[p.id] = { lat: saved.lat, lng: saved.lng };
+            var marker = state.markers[p.id];
+            if (marker) {
+              marker.setLatLng([saved.lat, saved.lng]);
+              if (marker.getElement()) marker.getElement().classList.add("is-dirty");
+            }
+            restored++;
+          }
+        });
+      }
+
+      if (backup.landmarks) {
+        (state.data.landmarks || []).forEach(function(l) {
+          if (state.pendingLandmarks[l.id]) return;
+          var saved = backup.landmarks[l.id];
+          if (!saved) return;
+          if (Math.abs(l.lat - saved.lat) > 0.00001 || Math.abs(l.lng - saved.lng) > 0.00001) {
+            state.pendingLandmarks[l.id] = { lat: saved.lat, lng: saved.lng };
+            var marker = state.landmarkMarkers[l.id];
+            if (marker) {
+              marker.setLatLng([saved.lat, saved.lng]);
+              if (marker.getElement()) marker.getElement().classList.add("is-dirty");
+            }
+            restored++;
+          }
+        });
+      }
+
+      return restored;
+    } catch(e) { return 0; }
+  }
+
   function showStatus(msg, kind) {
     const el = document.getElementById("statusMsg");
     el.textContent = msg;
@@ -362,6 +420,7 @@
       state.pending = {};
       state.pendingLandmarks = {};
       clearPendingStorage();
+      saveVerifiedBackup();
       renderSidebar();
       updatePendingUI();
       showStatus(`Đã lưu ${body.changed || 0} dự án, ${body.landmarksChanged || 0} tiện ích.`, "ok");
@@ -408,9 +467,14 @@
         });
       }
 
+      var backupRestored = restoreFromBackup();
+      restoredCount += backupRestored;
+
       renderSidebar();
       updatePendingUI();
-      if (restoredCount > 0) {
+      if (backupRestored > 0) {
+        showStatus("Server đã bị reset — đã khôi phục " + backupRestored + " tọa độ đã lưu trước đó. Bấm 'Lưu tất cả' để lưu lại.", "error");
+      } else if (restoredCount > 0) {
         showStatus("Đã khôi phục " + restoredCount + " thay đổi chưa lưu từ phiên trước.", "ok");
       }
 

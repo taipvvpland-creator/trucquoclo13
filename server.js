@@ -2,6 +2,7 @@ require('dotenv').config();
 const express = require('express');
 const path = require('path');
 const fs = require('fs');
+const https = require('https');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -41,6 +42,65 @@ function validCoordUpdates(list) {
     if (!u.id || !latOk || !lngOk) return false;
   }
   return true;
+}
+
+function syncToGitHub(jsonContent) {
+  const token = process.env.GITHUB_TOKEN;
+  if (!token) {
+    console.log('GITHUB_TOKEN chua duoc cau hinh — bo qua dong bo GitHub');
+    return;
+  }
+
+  const repo = 'taipvvpland-creator/trucquoclo13';
+  const filePath = 'data/projects.json';
+
+  function ghApi(method, body, cb) {
+    const payload = body ? JSON.stringify(body) : null;
+    const opts = {
+      hostname: 'api.github.com',
+      path: '/repos/' + repo + '/contents/' + filePath,
+      method: method,
+      headers: {
+        'Authorization': 'token ' + token,
+        'Accept': 'application/vnd.github.v3+json',
+        'User-Agent': 'TAIEM-Admin'
+      }
+    };
+    if (payload) {
+      opts.headers['Content-Type'] = 'application/json';
+      opts.headers['Content-Length'] = Buffer.byteLength(payload);
+    }
+    const req = https.request(opts, (res) => {
+      let chunks = '';
+      res.on('data', (c) => { chunks += c; });
+      res.on('end', () => { cb(null, res.statusCode, chunks); });
+    });
+    req.on('error', (e) => { cb(e); });
+    if (payload) req.write(payload);
+    req.end();
+  }
+
+  ghApi('GET', null, (err, status, body) => {
+    if (err) { console.error('GitHub sync GET error:', err.message); return; }
+    try {
+      const current = JSON.parse(body);
+      const content = Buffer.from(jsonContent).toString('base64');
+      ghApi('PUT', {
+        message: 'Cap nhat toa do tu admin tool',
+        content: content,
+        sha: current.sha
+      }, (err2, status2) => {
+        if (err2) { console.error('GitHub sync PUT error:', err2.message); return; }
+        if (status2 === 200 || status2 === 201) {
+          console.log('GitHub sync: projects.json da duoc cap nhat thanh cong');
+        } else {
+          console.error('GitHub sync that bai, status:', status2);
+        }
+      });
+    } catch (e) {
+      console.error('GitHub sync parse error:', e.message);
+    }
+  });
 }
 
 app.post('/api/admin/save-coords', (req, res) => {
@@ -100,6 +160,7 @@ app.post('/api/admin/save-coords', (req, res) => {
         res.status(500).json({ error: 'Khong ghi duoc file du lieu' });
         return;
       }
+      syncToGitHub(JSON.stringify(data, null, 2));
       res.json({ ok: true, changed, landmarksChanged });
     });
   });
